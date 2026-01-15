@@ -11,7 +11,7 @@ app = FastAPI()
 # Enable CORS for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -64,6 +64,12 @@ def on_startup():
 @app.get("/")
 async def root():
     return {"message": "CaddyBot API is running"}
+
+@app.post("/shot")
+async def save_shot(shot: ShotData):
+    print(f"Received shot data: {shot}")
+    # Here you would typically save to a database
+    return {"message": "Shot recorded successfully", "data": shot}
 
 @app.post("/shots/")
 def create_shot(shot: ShotData, session: SessionDep) -> ShotData:
